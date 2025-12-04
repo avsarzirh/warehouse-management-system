@@ -2,11 +2,11 @@ public class Product {
     static int idCounter = 1000;
 
     private int id;
-    private String productName;  // Eski: urunIsmi
-    private String manufacturer; // Eski: uretici
-    private String unit;         // Eski: birim
-    private int quantity = 0;    // Eski: miktar
-    private String shelf = "-";  // Eski: raf
+    private String productName;
+    private String manufacturer;
+    private String unit;
+    private int quantity = 0;
+    private String shelf = "-";
 
     public Product(String productName, String manufacturer, String unit) {
         this.id = idCounter;

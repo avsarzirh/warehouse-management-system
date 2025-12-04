@@ -1,6 +1,9 @@
 public class WarehouseApp {
     public static void main(String[] args) {
 
+        Warehouse whichWarehouse = new Warehouse("Merkez Depo", "İstanbul");
+        WarehouseService service = new WarehouseService(whichWarehouse); // Depoyu servise veriyoruz (Enjeksiyon)
+
         boolean isRunning = true;
         while (isRunning) {
             System.out.println("""
@@ -18,31 +21,31 @@ public class WarehouseApp {
                     
                     6-)Sistem Çıkış""");
 
-            int selection = WarehouseService.getValidInteger();
+            int selection = ScannerUtils.getValidInteger();
 
             switch (selection) {
                 case 1: // Ürün tanımlama
-                    WarehouseService.defineProduct();
+                    service.defineProduct();
                     break;
                 case 2: // Ürün listeleme
-                    WarehouseService.listProducts();
-                    WarehouseService.pressEnter();
+                    service.listProducts();
+                    ScannerUtils.pressEnter();
                     break;
                 case 3: // Ürün girişi
-                    WarehouseService.stockIn();
+                    service.stockIn();
                     break;
                 case 4: // Ürün çıkışı
-                    WarehouseService.stockOut();
+                    service.stockOut();
                     break;
                 case 5: // Ürünü rafa koyma
-                    WarehouseService.assignShelf();
+                    service.assignShelf();
                     break;
                 case 6: // Sistemden Çıkış
                     isRunning = false;
                     break;
                 default:
                     System.out.println("Lütfen geçerli bir sayı giriniz");
-                    WarehouseService.pressEnter();
+                    ScannerUtils.pressEnter();
             }
         }
     }

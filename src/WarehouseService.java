@@ -1,139 +1,116 @@
-import java.util.HashMap;
 import java.util.Scanner;
 
 public class WarehouseService {
     static Scanner input = new Scanner(System.in);
 
-    // Eski: urunMap -> Yeni: inventory
-    static HashMap<Integer, Product> inventory = new HashMap<>();
+    private final Warehouse warehouse;
 
-    // Eski: urunTanimla
-    public static void defineProduct() {
+    public WarehouseService(Warehouse warehouse) {
+        this.warehouse = warehouse;
+    }
+
+
+    void defineProduct() {
         System.out.print("Ürün ismi: ");
-        String name = getValidString("Ürün ismi").trim().toLowerCase();
+        String name = ScannerUtils.getValidString("Ürün ismi").trim().toLowerCase();
 
         System.out.print("Üretici ismi: ");
-        String manufacturer = getValidString("Üretici ismi").trim().toLowerCase();
+        String manufacturer = ScannerUtils.getValidString("Üretici ismi").trim().toLowerCase();
 
         System.out.print("Birim (çuval, litre, kg vs.) yoksa boş bırakın: ");
         String unit = input.nextLine().trim().toLowerCase();
 
         Product newProduct = new Product(name, manufacturer, unit);
 
-        inventory.put(newProduct.getId(), newProduct);
+        warehouse.getInventory().put(newProduct.getId(), newProduct);
         System.out.println("Ürününüz " + newProduct.getId() + " id numarası ile eklenmiştir");
-        pressEnter();
+        ScannerUtils.pressEnter();
     }
 
-    // Eski: urunListeleme
-    public static void listProducts() {
+
+    void listProducts() {
         System.out.printf("%-5s %-10s %-15s %-10s %-10s %-10s%n", "id", "ismi", "üreticisi", "miktar", "birimi", "raf");
         System.out.println("------------------------------------------------------------");
-        inventory.values().forEach(System.out::println);
+        warehouse.getInventory().values().forEach(System.out::println);
     }
 
-    // Eski: urunGirisi
-    public static void stockIn() {
+
+    void stockIn() {
         System.out.println("--- ÜRÜN GİRİŞİ ---");
         listProducts(); // Girmeden önce ürün id görmek için.
 
         System.out.print("Giriş yapmak istediğiniz ürün ID: ");
-        int id = getValidInteger();
-        if (!inventory.containsKey(id)) {
+        int id = ScannerUtils.getValidInteger();
+        if (!warehouse.getInventory().containsKey(id)) {
             System.err.println("Bu ID sistemde kayıtlı değil.");
-            pressEnter();
+            ScannerUtils.pressEnter();
             return;
         }
         System.out.println("Giriş yapmak istediğiniz ürün miktarını giriniz: ");
-        int entryAmount = getValidInteger();
+        int entryAmount = ScannerUtils.getValidInteger();
 
         if (entryAmount <= 0) {
             System.err.println(" HATA: Ürün girişi 0 veya negatif olamaz!");
-            pressEnter();
+            ScannerUtils.pressEnter();
             return;
         }
 
-        Product product = inventory.get(id);
+        Product product = warehouse.getInventory().get(id);
         product.setQuantity(product.getQuantity() + entryAmount);
         System.out.println("Yeni miktar: " + product.getQuantity());
-        pressEnter();
+        ScannerUtils.pressEnter();
     }
 
-    // Eski: urunCikis
-    public static void stockOut() {
+
+    void stockOut() {
         System.out.println("--- ÜRÜN ÇIKIŞI ---");
         listProducts();
 
         System.out.print("Çıkış yapmak istediğiniz ürün ID: ");
-        int id = getValidInteger();
+        int id = ScannerUtils.getValidInteger();
 
-        if (!inventory.containsKey(id)) {
+        if (!warehouse.getInventory().containsKey(id)) {
             System.err.println("Bu ID sistemde kayıtlı değil.");
-            pressEnter();
+            ScannerUtils.pressEnter();
             return;
         }
-        Product product = inventory.get(id);
+        Product product = warehouse.getInventory().get(id);
         if (product.getQuantity() == 0) {
             System.err.println("Girdiğiniz id deki ürünün miktarı zaten 0");
-            pressEnter();
+            ScannerUtils.pressEnter();
             return;
         }
         System.out.println("Çıkış yapmak istediğiniz ürün miktarını giriniz: ");
-        int exitAmount = getValidInteger();
+        int exitAmount = ScannerUtils.getValidInteger();
         if (exitAmount > product.getQuantity() || exitAmount < 0) {
             System.err.println("Var olan ürün miktarından fazla ürün çıkışı yapamazsınız ve girilen miktar negatif olamaz");
-            pressEnter();
+            ScannerUtils.pressEnter();
             return;
         }
-        inventory.get(id).setQuantity(product.getQuantity() - exitAmount);
+        warehouse.getInventory().get(id).setQuantity(product.getQuantity() - exitAmount);
         System.out.println("Ürün çıkışı başarılı. Kalan ürün miktarı: " + product.getQuantity());
-        pressEnter();
+        ScannerUtils.pressEnter();
     }
 
-    // Eski: rafaEkle
-    public static void assignShelf() {
+
+    void assignShelf() {
         listProducts();
         System.out.println("Rafa eklemek istediğiniz ürünün id numarasasını giriniz");
-        int id = getValidInteger();
-        if (!inventory.containsKey(id)) {
+        int id = ScannerUtils.getValidInteger();
+        if (!warehouse.getInventory().containsKey(id)) {
             System.err.println("Girdiğiniz id'de bir ürün bulunmuyor");
-            pressEnter();
+            ScannerUtils.pressEnter();
             return;
         }
-        Product product = inventory.get(id);
+        Product product = warehouse.getInventory().get(id);
 
         System.out.println("Hangi rafa eklensin");
-        String shelf = getValidString("Raf ismi").trim().toLowerCase();
+        String shelf = ScannerUtils.getValidString("Raf ismi").trim().toLowerCase();
 
         product.setShelf(shelf);
 
         System.out.println(product.getProductName() + " ürünü " + product.getShelf() + " rafına başarılı bir şekilde eklendi");
-        pressEnter();
+        ScannerUtils.pressEnter();
     }
 
-    public static void pressEnter() {
-        System.out.println("Devam etmek için Enter'a basınız...");
-        input.nextLine();
-    }
-
-    // Eski: getIntTryCatch
-    public static int getValidInteger() {
-        while (true) {
-            try {
-                return Integer.parseInt(input.nextLine());
-            } catch (NumberFormatException e) {
-                System.err.println("Lütfen sadece sayısal değer giriniz");
-            }
-        }
-    }
-
-    // Eski: isBlankCheck
-    public static String getValidString(String str) {
-        String userInput = input.nextLine();
-        while (userInput.isBlank()) {
-            System.err.println(str + " Boş bırakılamaz.");
-            userInput = input.nextLine();
-        }
-        return userInput;
-    }
 }
