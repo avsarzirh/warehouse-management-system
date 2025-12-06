@@ -2,7 +2,9 @@ public class WarehouseApp {
     public static void main(String[] args) {
 
         Warehouse whichWarehouse = new Warehouse("Merkez Depo", "İstanbul");
-        WarehouseService service = new WarehouseService(whichWarehouse); // Depoyu servise veriyoruz (Enjeksiyon)
+
+        // Sol taraf (Referans) Interface, Sağ taraf (Obje) Servis
+        InventoryService service = new WarehouseService(whichWarehouse); // Depoyu servise veriyoruz (Enjeksiyon)
 
         boolean isRunning = true;
         while (isRunning) {

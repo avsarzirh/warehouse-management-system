@@ -1,6 +1,6 @@
 import java.util.Scanner;
 
-public class WarehouseService {
+public class WarehouseService implements InventoryService {
     static Scanner input = new Scanner(System.in);
 
     private final Warehouse warehouse;
@@ -9,8 +9,8 @@ public class WarehouseService {
         this.warehouse = warehouse;
     }
 
-
-    void defineProduct() {
+    @Override
+    public void defineProduct() {
         System.out.print("Ürün ismi: ");
         String name = ScannerUtils.getValidString("Ürün ismi").trim().toLowerCase();
 
@@ -27,15 +27,15 @@ public class WarehouseService {
         ScannerUtils.pressEnter();
     }
 
-
-    void listProducts() {
+    @Override
+    public void listProducts() {
         System.out.printf("%-5s %-10s %-15s %-10s %-10s %-10s%n", "id", "ismi", "üreticisi", "miktar", "birimi", "raf");
         System.out.println("------------------------------------------------------------");
         warehouse.getInventory().values().forEach(System.out::println);
     }
 
-
-    void stockIn() {
+    @Override
+    public void stockIn() {
         System.out.println("--- ÜRÜN GİRİŞİ ---");
         listProducts(); // Girmeden önce ürün id görmek için.
 
@@ -61,8 +61,8 @@ public class WarehouseService {
         ScannerUtils.pressEnter();
     }
 
-
-    void stockOut() {
+    @Override
+    public void stockOut() {
         System.out.println("--- ÜRÜN ÇIKIŞI ---");
         listProducts();
 
@@ -92,8 +92,8 @@ public class WarehouseService {
         ScannerUtils.pressEnter();
     }
 
-
-    void assignShelf() {
+    @Override
+    public void assignShelf() {
         listProducts();
         System.out.println("Rafa eklemek istediğiniz ürünün id numarasasını giriniz");
         int id = ScannerUtils.getValidInteger();
