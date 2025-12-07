@@ -2,11 +2,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 // Taslak - Depo Varlığı
-public class Warehouse {
+public class Warehouse<T> {
     private String name;
     private String location;
     // Her deponun kendi envanteri (Heap bellekte ayrı alanlar)
-    private final Map<Integer, Product> inventory = new HashMap<>();
+    private final Map<Integer, T> inventory = new HashMap<>();
 
     // Constructor, Getter, Setter...
 
@@ -23,7 +23,7 @@ public class Warehouse {
         return location;
     }
 
-    public Map<Integer, Product> getInventory() {
+    public Map<Integer, T> getInventory() {
         return inventory;
     }
 

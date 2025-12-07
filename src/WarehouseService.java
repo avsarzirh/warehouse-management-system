@@ -3,9 +3,9 @@ import java.util.Scanner;
 public class WarehouseService implements InventoryService {
     static Scanner input = new Scanner(System.in);
 
-    private final Warehouse warehouse;
+    private final Warehouse<Product> warehouse;
 
-    public WarehouseService(Warehouse warehouse) {
+    public WarehouseService(Warehouse<Product> warehouse) {
         this.warehouse = warehouse;
     }
 
