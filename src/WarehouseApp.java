@@ -21,7 +21,9 @@ public class WarehouseApp {
                     
                     5-)Ürünü rafa koyma\
                     
-                    6-)Sistem Çıkış""");
+                    6-)Kritik Stokları Listele (<5)\
+                    
+                    0-)Sistem Çıkış""");
 
             int selection = ScannerUtils.getValidInteger();
 
@@ -42,7 +44,10 @@ public class WarehouseApp {
                 case 5: // Ürünü rafa koyma
                     service.assignShelf();
                     break;
-                case 6: // Sistemden Çıkış
+                case 6: //Kritik stokları listeleme
+                    service.listLowStocks();
+                    break;
+                case 0: // Sistemden Çıkış
                     isRunning = false;
                     break;
                 default:

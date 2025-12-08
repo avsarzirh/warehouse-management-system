@@ -1,3 +1,4 @@
+import java.util.Comparator;
 import java.util.Scanner;
 
 public class WarehouseService implements InventoryService {
@@ -17,8 +18,8 @@ public class WarehouseService implements InventoryService {
         System.out.print("Üretici ismi: ");
         String manufacturer = ScannerUtils.getValidString("Üretici ismi").trim().toLowerCase();
 
-        System.out.print("Birim (çuval, litre, kg vs.) yoksa boş bırakın: ");
-        String unit = input.nextLine().trim().toLowerCase();
+        System.out.print("Birim (çuval, litre, kg vs.): ");
+        String unit = ScannerUtils.getValidAlphabeticString("Birim").toLowerCase();
 
         Product newProduct = new Product(name, manufacturer, unit);
 
@@ -110,6 +111,17 @@ public class WarehouseService implements InventoryService {
         product.setShelf(shelf);
 
         System.out.println(product.getProductName() + " ürünü " + product.getShelf() + " rafına başarılı bir şekilde eklendi");
+        ScannerUtils.pressEnter();
+    }
+    //Stoğu 5 adetten az olan ürünleri getir.
+    @Override
+    public void listLowStocks() {
+        System.out.println("--- KRİTİK STOK LİSTESİ (<5) ---");
+        warehouse.getInventory().values().stream()
+                .filter(p -> p.getQuantity() < 5)
+                .sorted(Comparator.comparing(Product::getProductName))
+                .forEach(System.out::println);
+
         ScannerUtils.pressEnter();
     }
 

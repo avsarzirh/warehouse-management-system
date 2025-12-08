@@ -49,4 +49,26 @@ public class ScannerUtils {
             System.err.println("Hata: " + fieldName + " alanı boş bırakılamaz. Tekrar giriniz:");
         }
     }
+    //Kullanıcı bu alana rakam giremez, boş bırakamaz ve enter' a basıp geçemez
+    public static String getValidAlphabeticString(String fieldName) {
+        String userInput = "";
+
+        String regex = "^[a-zA-ZçÇğĞıİöÖşŞüÜ]+$";
+
+        while (true) {
+            userInput = input.nextLine().trim();
+
+            // 1. Boş mu kontrolü (Enter'a basıp geçemez)
+            if (userInput.isEmpty()) {
+                System.err.println("Hata: " + fieldName + " alanı boş bırakılamaz.");
+                continue;
+            }
+            // 2. Sadece Harf mi kontrolü (Sayı, Sembol ve Boşluk YASAK)
+            if (userInput.matches(regex)) {
+                return userInput;
+            } else {
+                System.err.println("Hata: " + fieldName + " alanı sadece harf içerebilir. (Sayı, sembol veya boşluk kullanmayınız).");
+            }
+        }
+    }
 }

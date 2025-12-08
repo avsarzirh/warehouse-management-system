@@ -6,5 +6,5 @@ public interface InventoryService {
     void stockIn();
     void stockOut();
     void assignShelf();
-
+    void listLowStocks();
 }
